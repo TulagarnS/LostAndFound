@@ -1,7 +1,16 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'dart:ui';
 import 'package:myapp/utils.dart';
+import 'package:google_maps_flutter_web/google_maps_flutter_web.dart';
+import 'package:flutter/material.dart';
+
+const String google_api_key = "AIzaSyCyTH829DDDnJyeuNt8AjGxgTSG0cmdk0U";
+
+
 
 void main() {
   runApp(const MyApp());
@@ -23,10 +32,64 @@ class MyApp extends StatelessWidget {
 }
 
 
+class MapScreen extends StatefulWidget{
+  @override
+  _MapScreenState createState() => _MapScreenState();
+}
+
+class _MapScreenState extends State<MapScreen> {
+  static const _initialCameraPosition = LatLng(37.773972, -122.431297);
+  @override
+  Widget build(BuildContext context){
+    return Scaffold(
+      body: GoogleMap(
+        initialCameraPosition: CameraPosition(target: _initialCameraPosition),
+      ),
+    );
+  }
+}
+
+// class WebMap extends StatefulWidget implements MapWidget {
+//   WebMap({Key? key}) : super(key: key);
+
+//   @override
+//   State<WebMap> createState() => WebMapState();
+// }
+
+// class WebMapState extends State<WebMap> {
+//   @override
+//   Widget build(BuildContext context) {
+//     final String htmlId = "map";
+
+//     // ignore: undefined_prefixed_name
+//     ui.platformViewRegistry.registerViewFactory(htmlId, (int viewId) {
+//       final mapOptions = MapOptions()
+//         ..zoom = 15.0
+//         ..center = LatLng(35.7560423, 139.7803552);
+
+//       final elem = DivElement()..id = htmlId;
+//       final map = GMap(elem, mapOptions);
+
+//       map.onCenterChanged.listen((event) {});
+//       map.onDragstart.listen((event) {});
+//       map.onDragend.listen((event) {});
+
+//       Marker(MarkerOptions()
+//         ..position = map.center
+//         ..map = map);
+
+//       return elem;
+//     });
+//     return HtmlElementView(viewType: htmlId);
+//   }
+// }
+
 class FirstRoute extends StatelessWidget {
   const FirstRoute({Key? key}) : super(key: key);
+   static const LatLng _initialCameraPosition = LatLng(37.773972, -122.431297);
   @override
   Widget build(BuildContext context) {
+    
     double baseWidth = 390;
     double fem = MediaQuery.of(context).size.width / baseWidth;
     double ffem = fem * 0.97;
@@ -367,10 +430,23 @@ class FirstRoute extends StatelessWidget {
                             child: SizedBox(
                               width: 404 * fem,
                               height: 422 * fem,
-                              child: Image.asset(
-                                'assets/page-1/images/image-1.png',
-                                fit: BoxFit.cover,
-                              ),
+                               child: GoogleMap(
+            initialCameraPosition: CameraPosition(target: _initialCameraPosition, zoom: 12),
+          ),
+                              // child: Image.asset(
+                              //   'assets/page-1/images/image-1.png',
+                              //fit: BoxFit.cover,
+                              //  child: GoogleMap(initialCameraPosition: CameraPosition(target: LatLng(20,-100), zoom: 12),
+                              //),
+          //                     child: ElevatedButton(
+          //   onPressed: () {
+          //     Navigator.push(
+          //       context,
+          //       MaterialPageRoute(builder: (context) => MapScreen()),
+          //     );
+          //   },
+          //   child: Text('Open Map'),
+          // ),
                             ),
                           ),
                         ),
@@ -425,6 +501,7 @@ class FirstRoute extends StatelessWidget {
                                           height: 17 * fem,
                                         ),
                                       ),
+                                      
                                     ],
                                   ),
                                 ),
