@@ -72,6 +72,8 @@ class _FormContent extends StatefulWidget {
 
 class __FormContentState extends State<_FormContent> {
   bool _isPasswordVisible = false;
+  String? email;
+  String? password;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -118,6 +120,9 @@ class __FormContentState extends State<_FormContent> {
                 if (value.length < 6) {
                   return 'Password must be at least 6 characters';
                 }
+                setState(() {
+                  email = value;
+                });
                 return null;
               },
               obscureText: !_isPasswordVisible,
@@ -154,14 +159,11 @@ class __FormContentState extends State<_FormContent> {
                 ),
                 onPressed: () {
                   if (_formKey.currentState?.validate() ?? false) {
-                    /// do something
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => HomePage()),
+                    );
                   }
-                  Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          HomePage()),
-                );
                 },
               ),
             ),
@@ -171,9 +173,7 @@ class __FormContentState extends State<_FormContent> {
                 // Navigate to the SignUp page
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          SignUpPage()),
+                  MaterialPageRoute(builder: (context) => SignUpPage()),
                 );
               },
               child: Text("Don’t have an account? Sign Up"),

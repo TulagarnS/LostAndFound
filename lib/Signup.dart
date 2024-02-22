@@ -230,14 +230,13 @@ class __FormContentState extends State<_FormContent> {
                 ),
                 onPressed: () {
                   if (_formKey.currentState?.validate() ?? false) {
-                    /// do something 
+                    /// do something
                     print("Fullname: $fullName");
                     print("UserName: $userName");
                     print("Email: $email");
                     print("Password: $password");
                     print("ConfirmPassword: $confirmPassword");
                   }
-                  // Navigate to Homepage
                 },
               ),
             ),

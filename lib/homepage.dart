@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:project1/profile.dart';
 import 'cat_lost_found.dart';
-import 'others.dart'; 
+import 'others.dart';
 import 'dog_lost_found.dart';
+import 'package:project1/dot_navigation_bar.dart';
+
+enum _SelectedTab { Home, AddPost, Chat, Profile } // Nav bar
 
 class HomePage extends StatefulWidget {
   @override
@@ -9,102 +13,144 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  var _selectedTab = _SelectedTab.Home; // Nav bar
+  void _handleIndexChanged(int i) {
+    // Nav bar
+    setState(() {
+      _selectedTab = _SelectedTab.values[i];
+      if (_selectedTab == _SelectedTab.Profile) {
+        // Navigate to Profile
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => FormPage()),
+        );
+      }
+    });
+  }
+
   int _selectedIndex = 0;
 
   @override
-Widget build(BuildContext context) {
-  return Scaffold(
-    appBar: AppBar(
-      backgroundColor: Colors.white,
-      title: Text(
-        'Homepage',
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-          color: Color(0xFF26117A),
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        title: Text(
+          'Homepage',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Color(0xFF26117A),
+          ),
+        ),
+        centerTitle: true, // Center the title
+      ),
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(height: 20),
+              PageHeader(),
+              SizedBox(height: 20),
+              Hellopage(),
+              SizedBox(height: 20),
+              OvalSearchBar(),
+              SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  OptionCircle(
+                    text: 'Dog',
+                    circleColor: Color(0xFFD5EEF6),
+                    imagePath: 'assets/DogSelect.png',
+                    onTap: () {
+                      // Navigate to CatLostFound screen
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => DogLostFound()),
+                      );
+                    },
+                  ),
+                  SizedBox(width: 10), // Add spacing between circles
+                  OptionCircle(
+                    text: 'Cat',
+                    circleColor: Color(0xFFF9EFCB),
+                    imagePath: 'assets/Cat2.png',
+                    onTap: () {
+                      // Navigate to CatLostFound screen
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => CatLostFound()),
+                      );
+                    },
+                  ),
+                  SizedBox(width: 10), // Add spacing between circles
+                  OptionCircle(
+                    text: 'Others',
+                    circleColor: Color(0xFFFBE3E3),
+                    imagePath: 'assets/BlueBird.png',
+                    onTap: () {
+                      // Navigate to CatLostFound screen
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => othersLostFound()),
+                      );
+                    },
+                  ),
+                ],
+              ),
+              SizedBox(height: 20),
+              UserInfo(),
+              SizedBox(height: 20),
+              UserInfofound(),
+            ],
+          ),
         ),
       ),
-      centerTitle: true, // Center the title
-    ),
-    body: SingleChildScrollView(
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(height: 20),
-            PageHeader(),
-            SizedBox(height: 20),
-            Hellopage(),
-            SizedBox(height: 20),
-            OvalSearchBar(),
-            SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                OptionCircle(
-                  text: 'Dog',
-                  circleColor: Color(0xFFD5EEF6),
-                  imagePath: 'assets/DogSelect.png',
-                  onTap: () {
-                    // Navigate to CatLostFound screen
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => DogLostFound()),
-                    );
-                  },
-                ),
-                SizedBox(width: 10), // Add spacing between circles
-                OptionCircle(
-                  text: 'Cat',
-                  circleColor: Color(0xFFF9EFCB),
-                  imagePath: 'assets/Cat2.png',
-                  onTap: () {
-                    // Navigate to CatLostFound screen
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => CatLostFound()),
-                    );
-                  },
-                ),
-                SizedBox(width: 10), // Add spacing between circles
-                OptionCircle(
-                  text: 'Others',
-                  circleColor: Color(0xFFFBE3E3),
-                  imagePath: 'assets/BlueBird.png',
-                  onTap: () {
-                    // Navigate to CatLostFound screen
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => othersLostFound()),
-                    );
-                  },
-                ),
-              ],
-            ),
-            SizedBox(height: 20),
-            UserInfo(),
-            SizedBox(height: 20),
-            UserInfofound(),
-          ],
+      bottomNavigationBar: SizedBox(
+        // Nav bar
+        height: 160,
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 0),
+          child: DotNavigationBar(
+            margin: const EdgeInsets.only(left: 30, right: 30),
+            currentIndex: _SelectedTab.values.indexOf(_selectedTab),
+            dotIndicatorColor: const Color.fromARGB(255, 250, 86, 114),
+            unselectedItemColor: Colors.grey[300],
+            splashBorderRadius: 50,
+            //enableFloatingNavBar: false,
+            onTap: _handleIndexChanged,
+            items: [
+              /// Home
+              DotNavigationBarItem(
+                icon: const Icon(Icons.home),
+                selectedColor: const Color.fromARGB(255, 250, 86, 114),
+              ),
+
+              /// Likes
+              DotNavigationBarItem(
+                icon: const Icon(Icons.add_circle),
+                selectedColor: const Color.fromARGB(255, 250, 86, 114),
+              ),
+
+              /// Search
+              DotNavigationBarItem(
+                icon: const Icon(Icons.chat),
+                selectedColor: const Color.fromARGB(255, 250, 86, 114),
+              ),
+
+              /// Profile
+              DotNavigationBarItem(
+                icon: const Icon(Icons.person),
+                selectedColor: const Color.fromARGB(255, 250, 86, 114),
+              ),
+            ],
+          ),
         ),
       ),
-    ),
-    bottomNavigationBar: BottomNavBar(
-      selectedIndex: _selectedIndex,
-      onItemTapped: (index) {
-        setState(() {
-          _selectedIndex = index;
-          if (_selectedIndex == 0) {
-            // Navigate to HomePage
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => HomePage()),
-            );
-          }
-        });
-      },
-    ),
-  );
-}
+    );
+  }
 }
 
 class OptionCircle extends StatelessWidget {
@@ -154,7 +200,6 @@ class OptionCircle extends StatelessWidget {
   }
 }
 
-
 class PageHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -164,7 +209,9 @@ class PageHeader extends StatelessWidget {
         Image.asset(
           'assets/Cloud.png',
           fit: BoxFit.cover, // Ensure the image covers the entire area
-          width: MediaQuery.of(context).size.width, // Set the width to match the screen width
+          width: MediaQuery.of(context)
+              .size
+              .width, // Set the width to match the screen width
           height: 200, // Adjust the height as needed
         ),
         Column(
@@ -449,89 +496,89 @@ class ContactButton extends StatelessWidget {
   }
 }
 
-class BottomNavBar extends StatelessWidget {
-  final int selectedIndex;
-  final Function(int) onItemTapped;
+// class BottomNavBar extends StatelessWidget {
+//   final int selectedIndex;
+//   final Function(int) onItemTapped;
 
-  const BottomNavBar({
-    required this.selectedIndex,
-    required this.onItemTapped,
-    Key? key,
-  }) : super(key: key);
+//   const BottomNavBar({
+//     required this.selectedIndex,
+//     required this.onItemTapped,
+//     Key? key,
+//   }) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.only(
-          topRight: Radius.circular(30),
-          topLeft: Radius.circular(30),
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Color.fromARGB(40, 35, 0, 76),
-            blurRadius: 10,
-          ),
-        ],
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.only(
-          topRight: Radius.circular(30),
-          topLeft: Radius.circular(30),
-        ),
-        child: BottomNavigationBar(
-          backgroundColor: Colors.white, // Add background color
-          items: [
-            BottomNavigationBarItem(
-              icon: Center(
-                child: Icon(
-                  Icons.home_outlined,
-                  size: 24,
-                ),
-              ),
-              label: ".", 
-            ),
-            BottomNavigationBarItem(
-              icon: Center(
-                child: Icon(
-                  Icons.add_circle_outlined,
-                  size: 24,
-                ),
-              ),
-              label: ".",
-            ),
-            BottomNavigationBarItem(
-              icon: Center(
-                child: Icon(
-                  Icons.notifications_outlined,
-                  size: 24,
-                ),
-              ),
-              label: ".",
-            ),
-            BottomNavigationBarItem(
-              icon: Center(
-                child: Icon(
-                  Icons.person_outline_rounded,
-                  size: 24,
-                ),
-              ),
-              label: ".",
-            ),
-          ],
-          currentIndex: selectedIndex,
-          unselectedItemColor: Color.fromARGB(255, 164, 138, 214),
-          selectedItemColor: Color.fromARGB(255, 253, 88, 115), // Pink color for selected item
-          onTap: onItemTapped,
-          type: BottomNavigationBarType.fixed,
-          unselectedFontSize: 0, // Hide label
-          selectedFontSize: 20, // Set selected label font size
-          selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold), // Bold selected label
-        ),
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       decoration: BoxDecoration(
+//         borderRadius: BorderRadius.only(
+//           topRight: Radius.circular(30),
+//           topLeft: Radius.circular(30),
+//         ),
+//         boxShadow: [
+//           BoxShadow(
+//             color: Color.fromARGB(40, 35, 0, 76),
+//             blurRadius: 10,
+//           ),
+//         ],
+//       ),
+//       child: ClipRRect(
+//         borderRadius: BorderRadius.only(
+//           topRight: Radius.circular(30),
+//           topLeft: Radius.circular(30),
+//         ),
+//         child: BottomNavigationBar(
+//           backgroundColor: Colors.white, // Add background color
+//           items: [
+//             BottomNavigationBarItem(
+//               icon: Center(
+//                 child: Icon(
+//                   Icons.home_outlined,
+//                   size: 24,
+//                 ),
+//               ),
+//               label: ".",
+//             ),
+//             BottomNavigationBarItem(
+//               icon: Center(
+//                 child: Icon(
+//                   Icons.add_circle_outlined,
+//                   size: 24,
+//                 ),
+//               ),
+//               label: ".",
+//             ),
+//             BottomNavigationBarItem(
+//               icon: Center(
+//                 child: Icon(
+//                   Icons.notifications_outlined,
+//                   size: 24,
+//                 ),
+//               ),
+//               label: ".",
+//             ),
+//             BottomNavigationBarItem(
+//               icon: Center(
+//                 child: Icon(
+//                   Icons.person_outline_rounded,
+//                   size: 24,
+//                 ),
+//               ),
+//               label: ".",
+//             ),
+//           ],
+//           currentIndex: selectedIndex,
+//           unselectedItemColor: Color.fromARGB(255, 164, 138, 214),
+//           selectedItemColor: Color.fromARGB(255, 253, 88, 115), // Pink color for selected item
+//           onTap: onItemTapped,
+//           type: BottomNavigationBarType.fixed,
+//           unselectedFontSize: 0, // Hide label
+//           selectedFontSize: 20, // Set selected label font size
+//           selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold), // Bold selected label
+//         ),
+//       ),
+//     );
+//   }
+// }
 
 class UserInfofound extends StatelessWidget {
   @override
@@ -677,4 +724,3 @@ class UserInfofound extends StatelessWidget {
     );
   }
 }
-
