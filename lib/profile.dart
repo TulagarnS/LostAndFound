@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:project1/SignIn.dart';
+import 'package:project1/homepage.dart';
 import 'package:project1/widgets/custom_button.dart';
 import 'package:project1/custom_input.dart';
 import 'package:project1/dot_navigation_bar.dart';
@@ -32,6 +33,13 @@ class _FormPageState extends State<FormPage> with TickerProviderStateMixin {
   void _handleIndexChanged(int i) {
     setState(() {
       _selectedTab = _SelectedTab.values[i];
+      if (_selectedTab == _SelectedTab.Home) { // If click profile nav will change page to profile page 
+        // Navigate to HomePage
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => HomePage()),
+        );
+      }
     });
   }
 
